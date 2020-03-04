@@ -21,11 +21,17 @@ const output = (filePath, html, domain) => {
   })
 };
 
-(() => {
-  const url = 'https://roomclip.jp/mag/archives/66777';
+const run = url => {
+  if (!url) {
+    console.log('Prease set URL');
+    return;
+  };
   getFunction(url, response => {
     const formattedHtml = formatHtml(response);
     const domain = getDomain(url);
     output(`${formatted}/${domain}`, formattedHtml, domain);
   });
-})();
+}
+
+exports.output = output;
+exports.run = run;
