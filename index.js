@@ -1,6 +1,6 @@
 const fs = require('fs');
 const { getFunction } = require('./api');
-const { formatHtml } = require('./format');
+const { formatHtml, removeImg, removeScript } = require('./format');
 const formatted = './formatted';
 
 const getDomain = url => url.match(/^https?:\/{2,}(.*?)(?:\/|\?|#|$)/)[1];
@@ -21,13 +21,19 @@ const output = (filePath, html, domain) => {
   })
 };
 
-const run = url => {
+const run = (url, options) => {
   if (!url) {
     console.log('Prease set URL');
     return;
   };
   getFunction(url, response => {
-    const formattedHtml = formatHtml(response);
+    let formattedHtml = formatHtml(response);
+    if (options === 'img') {
+      formattedHtml = removeImg(formattedHtml)
+    }
+    if (options === 'script') {
+      formattedHtml = removeScript(formattedHtml)
+    }
     const domain = getDomain(url);
     output(`${formatted}/${domain}`, formattedHtml, domain);
   });

@@ -10,4 +10,9 @@ const beautifyOptions = {
   unformatted: ['b', 'em']
 };
 
+const REGEX_IMG = /<img[^>]*>/g;
+const REGEX_SCRIPT = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
+
 exports.formatHtml = source => beautify.html(source, beautifyOptions);
+exports.removeImg = source => source.replace(REGEX_IMG, '');
+exports.removeScript = source => source.replace(REGEX_SCRIPT, '');
